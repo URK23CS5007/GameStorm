@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Storm 2026 | Extra Edge Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #d4145a 0%, #f72585 50%, #4a0e4e 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffd60a;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header with timer */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .brain-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffd60a, #ffba08);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .org-name {
+            font-size: 1.2em;
+            color: #ffd60a;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: 5em;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ffd60a, #ffffff, #ffd60a);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            text-shadow: 0 0 30px rgba(255, 214, 10, 0.5);
+            margin-bottom: 20px;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .hero h2 {
+            font-size: 2em;
+            color: #ffd60a;
+            margin-bottom: 30px;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Crown decoration */
+        .crown {
+            font-size: 4em;
+            animation: bounce 2s infinite;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Event details */
+        .event-details {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px;
+            margin: 40px auto;
+            max-width: 800px;
+            border: 3px solid #ffd60a;
+            animation: scaleIn 1s ease-out;
+            box-shadow: 0 10px 40px rgba(255, 214, 10, 0.3);
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .date-location {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .date-location h3 {
+            font-size: 2.5em;
+            color: #ffd60a;
+            margin-bottom: 10px;
+        }
+
+        .date-location p {
+            font-size: 1.3em;
+            color: #ffffff;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: linear-gradient(135deg, #ffd60a, #ffba08);
+            color: #1a1a1a;
+            padding: 20px 30px;
+            border-radius: 15px;
+            min-width: 100px;
+            animation: flipIn 1s ease-out;
+            box-shadow: 0 5px 20px rgba(255, 214, 10, 0.5);
+        }
+
+        .time-box:nth-child(1) { animation-delay: 0.1s; }
+        .time-box:nth-child(2) { animation-delay: 0.2s; }
+        .time-box:nth-child(3) { animation-delay: 0.3s; }
+        .time-box:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes flipIn {
+            from {
+                opacity: 0;
+                transform: rotateY(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: rotateY(0);
+            }
+        }
+
+        .time-box .number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-box .label {
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Game controls */
+        .game-controls {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .controls {
+            display: inline-flex;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 20px;
+            animation: rotateIn 1s ease-out;
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-180deg) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        .btn-control {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-control:hover {
+            transform: scale(1.2);
+            background: #ffd60a;
+            border-color: #ffd60a;
+            color: #1a1a1a;
+            box-shadow: 0 0 20px #ffd60a;
+        }
+
+        /* Contact section */
+        .contact {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 40px auto;
+            max-width: 700px;
+            border: 2px solid #ffd60a;
+            animation: slideInUp 1s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact h3 {
+            font-size: 2em;
+            color: #ffd60a;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .contact-person {
+            background: rgba(255, 214, 10, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-person:hover {
+            background: rgba(255, 214, 10, 0.2);
+            transform: translateX(10px);
+        }
+
+        .contact-person strong {
+            color: #ffd60a;
+            font-size: 1.2em;
+        }
+
+        .contact-person p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #ffd60a, #ffba08);
+            color: #1a1a1a;
+            padding: 20px 60px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 214, 10, 0.4);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(255, 214, 10, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 50px rgba(255, 214, 10, 0.8);
+            }
+        }
+
+        .btn-register:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #ffba08, #ffd60a);
+        }
+
+        /* Splash paint effects */
+        .splash {
+            position: absolute;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .splash-1 {
+            top: 10%;
+            left: 5%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #ffd60a 0%, transparent 70%);
+            animation: splash 4s infinite;
+        }
+
+        .splash-2 {
+            bottom: 10%;
+            right: 5%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #ffd60a 0%, transparent 70%);
+            animation: splash 5s infinite reverse;
+        }
+
+        @keyframes splash {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2) rotate(180deg);
+                opacity: 0.5;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3em;
+            }
+
+            .hero h2 {
+                font-size: 1.5em;
+            }
+
+            .event-details {
+                padding: 30px 20px;
+            }
+
+            .time-box {
+                min-width: 70px;
+                padding: 15px 20px;
+            }
+
+            .time-box .number {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated particles background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Splash effects -->
+    <div class="splash splash-1"></div>
+    <div class="splash splash-2"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="brain-icon">🧠</div>
+                <div class="org-name">EXTRA EDGE, MATRIX</div>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="crown">👑</div>
+            <h1>GAME STORM</h1>
+            <h2>Let's Have Some Fun!</h2>
+            
+            <!-- Game Controls -->
+            <div class="game-controls">
+                <div class="controls">
+                    <div class="btn-control">△</div>
+                    <div class="btn-control">◯</div>
+                    <div class="btn-control">✕</div>
+                    <div class="btn-control">▢</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Details -->
+        <div class="event-details">
+            <div class="date-location">
+                <h3>📅 11TH FEBRUARY, 2026</h3>
+                <p>📍 AI 204</p>
+            </div>
+
+            <!-- Countdown Timer -->
+            <div class="countdown" id="countdown">
+                <div class="time-box">
+                    <span class="number" id="days">00</span>
+                    <span class="label">Days</span>
+                </div>
+                <div class="time-box">
+                    <span class="number" id="hours">00</span>
+                    <span class="label">Hours</span>
+                </div>
+                <div class="time-box">
+                    <span class="number" id="minutes">00</span>
+                    <span class="label">Minutes</span>
+                </div>
+                <div class="time-box">
+                    <span class="number" id="seconds">00</span>
+                    <span class="label">Seconds</span>
+                </div>
+            </div>
+
+            <div class="cta-button">
+                <button class="btn-register" onclick="alert('Get ready to game! 🎮 Contact the coordinators for registration details.')">JOIN THE STORM</button>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="contact">
+            <h3>📞 Contact Us</h3>
+            <div class="contact-person">
+                <strong>Mesadini</strong>
+                <p>📱 9385830553</p>
+                <p>👤 Coordinator</p>
+            </div>
+            <div class="contact-person">
+                <strong>Saran</strong>
+                <p>📱 6380620322</p>
+                <p>👤 Joint Coordinator</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Countdown Timer
+        function updateCountdown() {
+            const eventDate = new Date('2026-02-11T00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            if (distance < 0) {
+                document.getElementById('countdown').innerHTML = '<h2 style="color: #ffd60a;">🎮 EVENT IS LIVE! 🎮</h2>';
+            }
+        }
+
+        // Interactive button effects
+        document.querySelectorAll('.btn-control').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1.2)';
+                }, 100);
+            });
+        });
+
+        // Initialize
+        createParticles();
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Add mouse parallax effect
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+            
+            document.querySelectorAll('.splash').forEach((splash, index) => {
+                const speed = (index + 1) * 20;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+                splash.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
